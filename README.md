@@ -1,2 +1,4 @@
 # Testing Colors
-trying color for the website
+Im just trying colors for the website 
+
+The css folder is empty because I moved my css at the html folder for now.
