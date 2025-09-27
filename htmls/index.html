@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Nostalgia</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body> 
+    <!-- Dark Mode Toggle Button -->
+    <button class="dark-mode-toggle" onclick="toggleLightMode()" aria-label="Toggle light mode">
+        [D]
+    </button>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>bongo404<h1>
+                <p class="typewriter">Personal Tech Journal</p>
+            </div>
+           
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home">[Home]</a></li>
+                    <li><a href="#articles">[Articles]</a></li>
+                    <li><a href="#projects">[Projects]</a></li>
+                    <li><a href="#reading">[Reading List]</a></li>
+                    <li><a href="#about">[About]</a></li>
+                </ul>
+            </nav>
+           
+            <hr class="decorative">
+           
+            <div class="sidebar-footer">
+                <p>"The dreams of yesterday are the hopes of today and the reality of tomorrow."</p>
+                <p>- Robert H. Goddard</p>
+            </div>
+        </div>
+       
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Welcome Content -->
+            <div class="welcome-content">
+                <h2>Welcome to Tech Nostalgia</h2>
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9134282a-5cc0-46a4-bf93-617e5796ca18.png" alt="Old CRT monitor and keyboard" style="max-width:100%; margin:20px 0;">
+                <p>A journey through retro computing, forgotten technologies, and timeless development principles.</p>
+                <p>Explore articles about:</p>
+                <ul>
+                    <li>Classic hardware restoration</li>
+                    <li>Old-school programming techniques</li>
+                    <li>The evolution of operating systems</li>
+                    <li>Bit mode graphics and classic game dev</li>
+                </ul>
+                <p style="margin-top:30px;">
+                    <a href="#articles" class="read-more">[Browse Articles]</a>
+                </p>
+            </div>
+           
+            <!-- Footer -->
+            <div class="footer">
+                © 2025 Tech Nostalgia • Built with HTML & CSS & Pixel Dreams
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isLightMode = false;
+
+        function toggleLightMode() {
+            const body = document.body;
+            const toggleBtn = document.querySelector('.dark-mode-toggle');
+            
+            if (isLightMode) {
+                body.classList.remove('light-mode');
+                toggleBtn.innerHTML = '[D]';
+                toggleBtn.setAttribute('aria-label', 'Switch to light mode');
+                localStorage.setItem('theme', 'dark');
+                isLightMode = false;
+            } else {
+                body.classList.add('light-mode');
+                toggleBtn.innerHTML = '[L]';
+                toggleBtn.setAttribute('aria-label', 'Switch to dark mode');
+                localStorage.setItem('theme', 'light');
+                isLightMode = true;
+            }
+        }
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                toggleLightMode();
+            }
+        }
+
+        // Keyboard shortcut (Ctrl/Cmd + D)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                e.preventDefault();
+                toggleLightMode();
+            }
+        });
+
+        // Initialize theme when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initTheme);
+        } else {
+            initTheme();
+        }
+    </script>
+</body>
+</html>
