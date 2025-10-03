@@ -3,9 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Nostalgia</title>
+    <title>Tech Nostalgia - Home</title>
     <link rel="stylesheet" href="style.css">
-    
+    <style>
+        /* Homepage specific styles */
+        .hero-section {
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        body.light-mode .hero-subtitle {
+            color: #666666;
+        }
+
+
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            color: var(--twilight-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 3px solid var(--twilight-light);
+            padding-bottom: 8px;
+            margin: 0;
+        }
+
+        .view-all-link {
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            background-color: var(--twilight-medium);
+            border: 2px solid var(--twilight-accent);
+            color: var(--twilight-accent);
+            text-transform: uppercase;
+            transition: all 0.15s ease;
+        }
+
+        .view-all-link:hover {
+            background-color: var(--twilight-accent);
+            color: var(--twilight-darkest);
+        }
+
+        body.light-mode .view-all-link {
+            background-color: #ffffff;
+            border-color: var(--twilight-medium);
+        }
+
+        body.light-mode .view-all-link:hover {
+            background-color: var(--twilight-medium);
+            color: #ffffff;
+        }
+
+        .featured-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .post-card {
+            background-color: var(--twilight-dark);
+            border: 3px solid var(--twilight-medium);
+            padding: 20px;
+            transition: all 0.2s ease;
+            box-shadow: var(--pixel-shadow) var(--twilight-medium);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-card:hover {
+            border-color: var(--twilight-accent);
+            transform: translateY(-3px);
+            box-shadow: 4px 4px 0px var(--twilight-light);
+        }
+
+        body.light-mode .post-card {
+            background-color: #ffffff;
+            border-color: #cccccc;
+            box-shadow: var(--pixel-shadow) #999999;
+        }
+
+        body.light-mode .post-card:hover {
+            border-color: var(--twilight-medium);
+            box-shadow: 4px 4px 0px var(--twilight-medium);
+        }
+
+        .post-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: var(--twilight-accent);
+            color: var(--twilight-darkest);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border: 2px solid var(--twilight-accent);
+            font-weight: bold;
+        }
+
+        .post-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--twilight-light);
+        }
+
+        body.light-mode .post-card h3 {
+            color: #2d2d2d;
+        }
+
+        .post-meta {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        body.light-mode .post-meta {
+            color: #666666;
+        }
+
+        .post-excerpt {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        body.light-mode .post-excerpt {
+            color: #2d2d2d;
+        }
+
+        .post-link {
+            padding: 10px 20px;
+            background-color: var(--twilight-medium);
+            color: var(--twilight-accent);
+            text-align: center;
+            border: 2px solid var(--twilight-accent);
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+            font-size: 1rem;
+        }
+
+        .post-link:hover {
+            background-color: var(--twilight-accent);
+            color: var(--twilight-darkest);
+        }
+
+        body.light-mode .post-link {
+            background-color: #f0f0f0;
+            border-color: var(--twilight-medium);
+        }
+
+        /* Calendar styles */
+        .calendar {
+            background-color: var(--twilight-darkest);
+            border: 2px solid var(--twilight-medium);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            color: var(--twilight-accent);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--twilight-light);
+            padding-bottom: 8px;
+        }
+
+        .event-list {
+            list-style: none;
+            margin: 0;
+        }
+
+        .event-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background-color: var(--twilight-dark);
+            border-left: 3px solid var(--twilight-accent);
+        }
+
+        .event-item::before {
+            content: none;
+        }
+
+        .event-date {
+            color: var(--twilight-accent);
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .event-title {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        body.light-mode .calendar {
+            background-color: #ffffff;
+            border-color: #cccccc;
+        }
+
+        body.light-mode .event-item {
+            background-color: #f5f5f5;
+        }
+
+        body.light-mode .event-title {
+            color: #2d2d2d;
+        }
+
+        .quick-links {
+            background-color: var(--twilight-darkest);
+            border: 2px solid var(--twilight-medium);
+            padding: 15px;
+        }
+
+        .quick-links h4 {
+            color: var(--twilight-accent);
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quick-links ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .quick-links li {
+            margin-bottom: 8px;
+        }
+
+        .quick-links li::before {
+            content: '▸';
+            color: var(--twilight-accent);
+            left: -15px;
+        }
+
+        .quick-links a {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .quick-links a:hover {
+            color: var(--twilight-accent);
+        }
+
+        body.light-mode .quick-links {
+            background-color: #ffffff;
+            border-color: #cccccc;
+        }
+
+        body.light-mode .quick-links a {
+            color: #2d2d2d;
+        }
+
+        @media (max-width: 768px) {
+            .featured-posts {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body> 
     <!-- Dark Mode Toggle Button -->
@@ -17,19 +309,51 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h1>bongo404<h1>
-                <p class="typewriter">Personal Tech Journal</p>
+                <h1>bongo404</h1>
+                <p class="typewriter">Profile Found</p>
             </div>
            
             <nav>
                 <ul class="nav-links">
-                    <li><a href="#home">[Home]</a></li>
-                    <li><a href="#articles">[Articles]</a></li>
-                    <li><a href="#projects">[Projects]</a></li>
+                    <li><a href="index.html">[Home]</a></li>
+                    <li><a href="articles.html">[Articles]</a></li>
+                    <li><a href="projects.html">[Projects]</a></li>
                     <li><a href="#reading">[Reading List]</a></li>
                     <li><a href="#about">[About]</a></li>
                 </ul>
             </nav>
+           
+            <hr class="decorative">
+
+            <!-- Upcoming Events Calendar -->
+            <div class="calendar">
+                <div class="calendar-header">Upcoming Events</div>
+                <ul class="event-list">
+                    <li class="event-item">
+                        <span class="event-date">OCT 15, 2025</span>
+                        <span class="event-title">Retro Gaming Stream</span>
+                    </li>
+                    <li class="event-item">
+                        <span class="event-date">OCT 22, 2025</span>
+                        <span class="event-title">DOS Programming Workshop</span>
+                    </li>
+                    <li class="event-item">
+                        <span class="event-date">NOV 05, 2025</span>
+                        <span class="event-title">Hardware Restoration Livestream</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#newsletter">Newsletter</a></li>
+                    <li><a href="#discord">Discord Community</a></li>
+                    <li><a href="#github">GitHub Projects</a></li>
+                    <li><a href="#rss">RSS Feed</a></li>
+                </ul>
+            </div>
            
             <hr class="decorative">
            
@@ -41,21 +365,32 @@
        
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Welcome Content -->
-            <div class="welcome-content">
-                <h2>Welcome to Tech Nostalgia</h2>
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9134282a-5cc0-46a4-bf93-617e5796ca18.png" alt="Old CRT monitor and keyboard" style="max-width:100%; margin:20px 0;">
-                <p>A journey through retro computing, forgotten technologies, and timeless development principles.</p>
-                <p>Explore articles about:</p>
-                <ul>
-                    <li>Classic hardware restoration</li>
-                    <li>Old-school programming techniques</li>
-                    <li>The evolution of operating systems</li>
-                    <li>Bit mode graphics and classic game dev</li>
-                </ul>
-                <p style="margin-top:30px;">
-                    <a href="#articles" class="read-more">[Browse Articles]</a>
-                </p>
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h2 class="hero-title">Welcome to Tech Nostalgia</h2>
+                <p class="hero-subtitle">> Exploring the intersection of retro computing and modern development</p>
+            </div>
+
+
+
+            <!-- Hot Posts Section -->
+            <div class="section-header">
+                <h3 class="section-title">🔥 Hot Posts</h3>
+                <a href="articles.html" class="view-all-link">[View All]</a>
+            </div>
+
+            <div class="featured-posts" id="hotPosts">
+                <!-- Hot posts will be inserted here -->
+            </div>
+
+            <!-- Latest Posts Section -->
+            <div class="section-header">
+                <h3 class="section-title">⚡ Latest Posts</h3>
+                <a href="articles.html" class="view-all-link">[View All]</a>
+            </div>
+
+            <div class="featured-posts" id="latestPosts">
+                <!-- Latest posts will be inserted here -->
             </div>
            
             <!-- Footer -->
@@ -66,6 +401,112 @@
     </div>
 
     <script>
+        // Sample posts data
+        const posts = [
+            {
+                id: 1,
+                title: "The Godot Engine",
+                category: "Hardware",
+                date: "2025-09-28",
+                excerpt: "Godot is completely free and open source under the MIT license.",
+                link: "godotarticle.html",
+                views: 2847,
+                hot: true
+            },
+            {
+                id: 2,
+                title: "Writing Games in Assembly",
+                category: "Programming",
+                date: "2025-09-25",
+                excerpt: "Learn how classic games were built with limited resources and pure assembly code.",
+                link: "#",
+                views: 3521,
+                hot: true
+            },
+            {
+                id: 3,
+                title: "The Beauty of CRT Monitors",
+                category: "Hardware",
+                date: "2025-09-20",
+                excerpt: "Why some gamers and enthusiasts still prefer cathode ray tube displays in 2025.",
+                link: "#",
+                views: 1923,
+                hot: false
+            },
+            {
+                id: 4,
+                title: "DOS Command Line Tricks",
+                category: "Operating Systems",
+                date: "2025-09-18",
+                excerpt: "Hidden DOS commands and techniques that still have relevance today.",
+                link: "#",
+                views: 4102,
+                hot: true
+            },
+            {
+                id: 5,
+                title: "Pixel Art Animation Guide",
+                category: "Gaming",
+                date: "2025-09-15",
+                excerpt: "Master the techniques used in classic 16-bit game animations.",
+                link: "#",
+                views: 1654,
+                hot: false
+            },
+            {
+                id: 6,
+                title: "Building a Retro Web Terminal",
+                category: "Programming",
+                date: "2025-09-10",
+                excerpt: "Create a browser-based terminal emulator with authentic retro styling.",
+                link: "#",
+                views: 2234,
+                hot: false
+            }
+        ];
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        }
+
+        function createPostCard(post, showBadge = false) {
+            return `
+                <div class="post-card">
+                    ${showBadge ? '<span class="post-badge">🔥 HOT</span>' : ''}
+                    <h3>${post.title}</h3>
+                    <div class="post-meta">${post.category} • ${formatDate(post.date)}</div>
+                    <p class="post-excerpt">${post.excerpt}</p>
+                    <a href="${post.link}" class="post-link">[Read More]</a>
+                </div>
+            `;
+        }
+
+        function renderPosts() {
+            // Get hot posts (sorted by views)
+            const hotPosts = posts
+                .filter(p => p.hot)
+                .sort((a, b) => b.views - a.views)
+                .slice(0, 3);
+
+            // Get latest posts (sorted by date)
+            const latestPosts = posts
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 3);
+
+            // Render hot posts
+            document.getElementById('hotPosts').innerHTML = hotPosts
+                .map(post => createPostCard(post, true))
+                .join('');
+
+            // Render latest posts
+            document.getElementById('latestPosts').innerHTML = latestPosts
+                .map(post => createPostCard(post, false))
+                .join('');
+        }
+
+        // Theme toggle
         let isLightMode = false;
 
         function toggleLightMode() {
@@ -103,11 +544,15 @@
             }
         });
 
-        // Initialize theme when DOM is ready
+        // Initialize on load
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initTheme);
+            document.addEventListener('DOMContentLoaded', function() {
+                initTheme();
+                renderPosts();
+            });
         } else {
             initTheme();
+            renderPosts();
         }
     </script>
 </body>

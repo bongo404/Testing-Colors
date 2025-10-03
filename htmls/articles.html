@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles - Tech Nostalgia</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles for articles page */
+        .articles-header {
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .filter-btn, .sort-select {
+            padding: 10px 20px;
+            background-color: var(--twilight-medium);
+            color: var(--text-light);
+            border: 2px solid var(--twilight-light);
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            transition: all 0.15s ease;
+        }
+
+        .filter-btn:hover, .sort-select:hover {
+            background-color: var(--twilight-light);
+            color: var(--twilight-darkest);
+        }
+
+        .filter-btn.active {
+            background-color: var(--twilight-accent);
+            color: var(--twilight-darkest);
+            border-color: var(--twilight-accent);
+        }
+
+        .sort-select {
+            padding: 10px 15px;
+        }
+
+        body.light-mode .filter-btn,
+        body.light-mode .sort-select {
+            background-color: #ffffff;
+            color: #2d2d2d;
+            border-color: var(--twilight-medium);
+        }
+
+        body.light-mode .filter-btn:hover,
+        body.light-mode .sort-select:hover {
+            background-color: #f0f0f0;
+        }
+
+        body.light-mode .filter-btn.active {
+            background-color: var(--twilight-accent);
+            color: #ffffff;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .article-card {
+            background-color: var(--twilight-dark);
+            border: 3px solid var(--twilight-medium);
+            padding: 20px;
+            transition: all 0.2s ease;
+            box-shadow: var(--pixel-shadow) var(--twilight-medium);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card:hover {
+            border-color: var(--twilight-accent);
+            transform: translateY(-3px);
+            box-shadow: 4px 4px 0px var(--twilight-light);
+        }
+
+        body.light-mode .article-card {
+            background-color: #ffffff;
+            border-color: #cccccc;
+            box-shadow: var(--pixel-shadow) #999999;
+        }
+
+        body.light-mode .article-card:hover {
+            border-color: var(--twilight-medium);
+            box-shadow: 4px 4px 0px var(--twilight-medium);
+        }
+
+        .article-category {
+            display: inline-block;
+            padding: 5px 12px;
+            background-color: var(--twilight-medium);
+            color: var(--twilight-accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border: 2px solid var(--twilight-accent);
+        }
+
+        body.light-mode .article-category {
+            background-color: #f0f0f0;
+            border-color: var(--twilight-medium);
+            color: var(--twilight-medium);
+        }
+
+        .article-card h3 {
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+        }
+
+        .article-date {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        body.light-mode .article-date {
+            color: #666666;
+        }
+
+        .article-excerpt {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        body.light-mode .article-excerpt {
+            color: #2d2d2d;
+        }
+
+        .article-card .read-more {
+            padding: 10px 20px;
+            font-size: 1rem;
+            align-self: flex-start;
+        }
+
+        .no-articles {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body> 
+    <!-- Dark Mode Toggle Button -->
+    <button class="dark-mode-toggle" onclick="toggleLightMode()" aria-label="Toggle light mode">
+        [D]
+    </button>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>bongo404</h1>
+                <p class="typewriter">Profile Found</p>
+            </div>
+           
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">[Home]</a></li>
+                    <li><a href="articles.html">[Articles]</a></li>
+                    <li><a href="projects.html">[Projects]</a></li>
+                    <li><a href="#reading">[Reading List]</a></li>
+                    <li><a href="#about">[About]</a></li>
+                </ul>
+            </nav>
+           
+            <hr class="decorative">
+           
+            <div class="sidebar-footer">
+                <p>"The dreams of yesterday are the hopes of today and the reality of tomorrow."</p>
+                <p>- Robert H. Goddard</p>
+            </div>
+        </div>
+       
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="articles-header">
+                <h2>Articles Archive</h2>
+                <p>Exploring the intersection of nostalgia and technology</p>
+            </div>
+
+            <!-- Filter and Sort Bar -->
+            <div class="filter-bar">
+                <button class="filter-btn active" data-category="all">[All]</button>
+                <button class="filter-btn" data-category="hardware">[Hardware]</button>
+                <button class="filter-btn" data-category="programming">[Programming]</button>
+                <button class="filter-btn" data-category="gaming">[Gaming]</button>
+                <button class="filter-btn" data-category="os">[Operating Systems]</button>
+                <select class="sort-select" id="sortSelect">
+                    <option value="newest">[Sort: Newest First]</option>
+                    <option value="oldest">[Sort: Oldest First]</option>
+                    <option value="title">[Sort: Title A-Z]</option>
+                </select>
+            </div>
+
+            <!-- Articles Grid -->
+            <div class="articles-grid" id="articlesGrid">
+                <!-- Article cards will be dynamically inserted here -->
+            </div>
+
+            <div class="no-articles" id="noArticles" style="display: none;">
+                > No articles found in this category
+            </div>
+           
+            <!-- Footer -->
+            <div class="footer">
+                © 2025 Tech Nostalgia • Built with HTML & CSS & Pixel Dreams
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample articles data
+        const articles = [
+            {
+                id: 1,
+                title: "Restoring a 1984 IBM PC",
+                category: "hardware",
+                date: "2025-09-15",
+                excerpt: "Journey through the restoration of a classic IBM PC, from cleaning to getting it boot-ready. Discover the challenges and triumphs of bringing vintage tech back to life.",
+                link: "#"
+            },
+            {
+                id: 2,
+                title: "Assembly Language Basics",
+                category: "programming",
+                date: "2025-09-01",
+                excerpt: "Learn the fundamentals of x86 assembly programming. Understanding low-level operations helps appreciate modern abstractions.",
+                link: "#"
+            },
+            {
+                id: 3,
+                title: "The DOS Gaming Golden Age",
+                category: "gaming",
+                date: "2025-08-20",
+                excerpt: "Exploring the games that defined a generation. From Commander Keen to DOOM, DOS gaming pushed boundaries and created legends.",
+                link: "#"
+            },
+            {
+                id: 4,
+                title: "Windows 95 Interface Design",
+                category: "os",
+                date: "2025-08-05",
+                excerpt: "The revolutionary UI that changed computing forever. How Windows 95's design principles still influence modern interfaces.",
+                link: "#"
+            },
+            {
+                id: 5,
+                title: "CRT Monitors: Beauty in Scanlines",
+                category: "hardware",
+                date: "2025-07-22",
+                excerpt: "Why some gamers still prefer CRT displays. The technical advantages and nostalgic appeal of cathode ray tube technology.",
+                link: "#"
+            },
+            {
+                id: 6,
+                title: "Writing a Text Editor in C",
+                category: "programming",
+                date: "2025-07-10",
+                excerpt: "Building a terminal-based text editor from scratch. Learn about buffer management, terminal control, and efficient text manipulation.",
+                link: "#"
+            },
+            {
+                id: 7,
+                title: "Pixel Art Techniques",
+                category: "gaming",
+                date: "2025-06-28",
+                excerpt: "Master the art of pixel-perfect graphics. Techniques used by classic game developers to create stunning visuals within tight constraints.",
+                link: "#"
+            },
+            {
+                id: 8,
+                title: "Linux Kernel 0.01 Analysis",
+                category: "os",
+                date: "2025-06-15",
+                excerpt: "Reading through Linus Torvalds' original Linux kernel code. What can we learn from the humble beginnings of a OS revolution?",
+                link: "#"
+            }
+        ];
+
+        let currentFilter = 'all';
+        let currentSort = 'newest';
+
+        function renderArticles() {
+            const grid = document.getElementById('articlesGrid');
+            const noArticles = document.getElementById('noArticles');
+            
+            // Filter articles
+            let filtered = articles.filter(article => 
+                currentFilter === 'all' || article.category === currentFilter
+            );
+
+            // Sort articles
+            filtered.sort((a, b) => {
+                if (currentSort === 'newest') {
+                    return new Date(b.date) - new Date(a.date);
+                } else if (currentSort === 'oldest') {
+                    return new Date(a.date) - new Date(b.date);
+                } else if (currentSort === 'title') {
+                    return a.title.localeCompare(b.title);
+                }
+            });
+
+            // Clear grid
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                noArticles.style.display = 'block';
+                return;
+            } else {
+                noArticles.style.display = 'none';
+            }
+
+            // Render articles
+            filtered.forEach(article => {
+                const card = document.createElement('div');
+                card.className = 'article-card';
+                card.innerHTML = `
+                    <span class="article-category">[${article.category.toUpperCase()}]</span>
+                    <h3>${article.title}</h3>
+                    <div class="article-date">> ${formatDate(article.date)}</div>
+                    <p class="article-excerpt">${article.excerpt}</p>
+                    <a href="${article.link}" class="read-more">[Read Article]</a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        }
+
+        // Filter button handlers
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.getAttribute('data-category');
+                renderArticles();
+            });
+        });
+
+        // Sort handler
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            currentSort = this.value;
+            renderArticles();
+        });
+
+        // Theme toggle (same as main page)
+        let isLightMode = false;
+
+        function toggleLightMode() {
+            const body = document.body;
+            const toggleBtn = document.querySelector('.dark-mode-toggle');
+            
+            if (isLightMode) {
+                body.classList.remove('light-mode');
+                toggleBtn.innerHTML = '[D]';
+                toggleBtn.setAttribute('aria-label', 'Switch to light mode');
+                isLightMode = false;
+            } else {
+                body.classList.add('light-mode');
+                toggleBtn.innerHTML = '[L]';
+                toggleBtn.setAttribute('aria-label', 'Switch to dark mode');
+                isLightMode = true;
+            }
+        }
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                toggleLightMode();
+            }
+        }
+
+        // Keyboard shortcut (Ctrl/Cmd + D)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                e.preventDefault();
+                toggleLightMode();
+            }
+        });
+
+        // Initialize on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                initTheme();
+                renderArticles();
+            });
+        } else {
+            initTheme();
+            renderArticles();
+        }
+    </script>
+</body>
+</html>
