@@ -6,6 +6,16 @@
     <title>Why you should use the Godot Engine - Tech Nostalgia</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Import better reading font with retro feel */
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+        /* Override body font for article pages */
+        body.article-page .article-content p,
+        body.article-page .article-content li,
+        body.article-page .highlight-box {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+        }
+
         /* Article page specific styles */
         .article-header {
             margin-bottom: 30px;
@@ -40,7 +50,8 @@
             gap: 20px;
             flex-wrap: wrap;
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.15rem;
+            font-weight: 500;
         }
 
         .article-meta span {
@@ -60,12 +71,13 @@
         }
 
         .article-content h3 {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             color: var(--twilight-light);
-            margin-top: 35px;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
             border-bottom: 2px solid var(--twilight-medium);
+            font-family: 'VT323', monospace;
         }
 
         body.light-mode .article-content h3 {
@@ -73,19 +85,22 @@
         }
 
         .article-content p {
-            font-size: 1.15rem;
-            line-height: 1.7;
-            margin-bottom: 20px;
+            font-size: 1.25rem;
+            line-height: 1.8;
+            margin-bottom: 24px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
         }
 
         .article-content ul {
-            margin-bottom: 25px;
+            margin-bottom: 28px;
         }
 
         .article-content li {
-            margin-bottom: 12px;
-            font-size: 1.1rem;
-            line-height: 1.6;
+            margin-bottom: 14px;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            font-weight: 400;
         }
 
         .article-image {
@@ -114,9 +129,11 @@
         .highlight-box {
             background-color: var(--twilight-dark);
             border-left: 4px solid var(--twilight-accent);
-            padding: 20px;
-            margin: 25px 0;
-            font-size: 1.15rem;
+            padding: 25px;
+            margin: 30px 0;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            font-weight: 400;
         }
 
         body.light-mode .highlight-box {
@@ -126,11 +143,12 @@
         .code-block {
             background-color: var(--twilight-dark);
             border: 2px solid var(--twilight-medium);
-            padding: 20px;
-            margin: 25px 0;
+            padding: 25px;
+            margin: 30px 0;
             overflow-x: auto;
             font-family: 'VT323', monospace;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            line-height: 1.6;
             color: var(--twilight-accent);
         }
 
@@ -395,7 +413,7 @@
         }
     </style>
 </head>
-<body> 
+<body class="article-page"> 
     <!-- Mobile Menu Toggle Button -->
     <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
         [☰]
@@ -418,8 +436,8 @@
                 <ul class="nav-links">
                     <li><a href="index.html">[Home]</a></li>
                     <li><a href="articles.html">[Articles]</a></li>
-                    <li><a href="#projects">[Projects]</a></li>
-                    <li><a href="#reading">[Reading List]</a></li>
+                    <li><a href="projects.html">[Projects]</a></li>
+                    <li><a href="tutorials.html">[Tutorials]</a></li>
                     <li><a href="#about">[About]</a></li>
                 </ul>
             </nav>

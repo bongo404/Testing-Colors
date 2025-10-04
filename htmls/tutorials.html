@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials - Tech Nostalgia</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Tutorials page specific styles */
+        .tutorials-header {
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tutorials-intro {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        body.light-mode .tutorials-intro {
+            color: #666666;
+        }
+
+        .controls-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-container {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--twilight-dark);
+            color: var(--text-light);
+            border: 2px solid var(--twilight-light);
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            transition: all 0.15s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--twilight-accent);
+            background-color: var(--twilight-darkest);
+        }
+
+        body.light-mode .search-input {
+            background-color: #ffffff;
+            color: #2d2d2d;
+            border-color: var(--twilight-medium);
+        }
+
+        body.light-mode .search-input:focus {
+            background-color: #f9f9f9;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: var(--twilight-medium);
+            color: var(--text-light);
+            border: 2px solid var(--twilight-light);
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            transition: all 0.15s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--twilight-light);
+            color: var(--twilight-darkest);
+        }
+
+        .filter-btn.active {
+            background-color: var(--twilight-accent);
+            color: var(--twilight-darkest);
+            border-color: var(--twilight-accent);
+        }
+
+        body.light-mode .filter-btn {
+            background-color: #ffffff;
+            color: #2d2d2d;
+            border-color: var(--twilight-medium);
+        }
+
+        body.light-mode .filter-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        body.light-mode .filter-btn.active {
+            background-color: var(--twilight-accent);
+            color: #ffffff;
+        }
+
+        .tutorials-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tutorial-card {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            background-color: var(--twilight-dark);
+            border: 3px solid var(--twilight-medium);
+            padding: 25px;
+            transition: all 0.2s ease;
+            box-shadow: var(--pixel-shadow) var(--twilight-medium);
+            align-items: start;
+        }
+
+        .tutorial-card:hover {
+            border-color: var(--twilight-accent);
+            transform: translateX(5px);
+            box-shadow: 6px 6px 0px var(--twilight-light);
+        }
+
+        body.light-mode .tutorial-card {
+            background-color: #ffffff;
+            border-color: #cccccc;
+            box-shadow: var(--pixel-shadow) #999999;
+        }
+
+        body.light-mode .tutorial-card:hover {
+            border-color: var(--twilight-medium);
+            box-shadow: 6px 6px 0px var(--twilight-medium);
+        }
+
+        .tutorial-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tutorial-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tutorial-title {
+            font-size: 1.8rem;
+            color: var(--twilight-accent);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        body.light-mode .tutorial-title {
+            color: var(--twilight-medium);
+        }
+
+        .tutorial-difficulty {
+            padding: 5px 12px;
+            background-color: var(--twilight-medium);
+            color: var(--twilight-accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--twilight-accent);
+            font-weight: bold;
+        }
+
+        .tutorial-difficulty.beginner {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+            color: var(--twilight-darkest);
+        }
+
+        .tutorial-difficulty.intermediate {
+            background-color: var(--twilight-accent);
+            border-color: var(--twilight-accent);
+            color: var(--twilight-darkest);
+        }
+
+        .tutorial-difficulty.advanced {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+            color: #ffffff;
+        }
+
+        body.light-mode .tutorial-difficulty {
+            background-color: #f0f0f0;
+            border-color: var(--twilight-medium);
+        }
+
+        .tutorial-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .tutorial-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        body.light-mode .tutorial-meta {
+            color: #666666;
+        }
+
+        .tutorial-description {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        body.light-mode .tutorial-description {
+            color: #2d2d2d;
+        }
+
+        .tutorial-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 5px 10px;
+            background-color: var(--twilight-darkest);
+            color: var(--twilight-light);
+            border: 2px solid var(--twilight-medium);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        body.light-mode .tag {
+            background-color: #f5f5f5;
+            border-color: #cccccc;
+            color: #2d2d2d;
+        }
+
+        .tutorial-btn {
+            padding: 10px 20px;
+            background-color: var(--twilight-medium);
+            color: var(--twilight-accent);
+            border: 2px solid var(--twilight-accent);
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            text-transform: uppercase;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .tutorial-btn:hover {
+            background-color: var(--twilight-accent);
+            color: var(--twilight-darkest);
+        }
+
+        body.light-mode .tutorial-btn {
+            background-color: #ffffff;
+            border-color: var(--twilight-medium);
+            color: var(--twilight-medium);
+        }
+
+        body.light-mode .tutorial-btn:hover {
+            background-color: var(--twilight-medium);
+            color: #ffffff;
+        }
+
+        .tutorial-chapters {
+            width: 350px;
+            background-color: var(--twilight-darkest);
+            border: 3px solid var(--twilight-light);
+            padding: 20px;
+            box-shadow: var(--pixel-shadow) var(--twilight-medium);
+        }
+
+        .chapters-header {
+            color: var(--twilight-accent);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--twilight-light);
+            padding-bottom: 8px;
+        }
+
+        .chapters-list {
+            list-style: none;
+            margin: 0;
+        }
+
+        .chapter-item {
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            background-color: var(--twilight-dark);
+            border-left: 3px solid var(--twilight-medium);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.15s ease;
+        }
+
+        .chapter-item:hover {
+            border-left-color: var(--twilight-accent);
+            background-color: var(--twilight-medium);
+        }
+
+        .chapter-item::before {
+            content: none;
+        }
+
+        .chapter-number {
+            color: var(--twilight-accent);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        body.light-mode .tutorial-chapters {
+            background-color: #ffffff;
+            border-color: #cccccc;
+        }
+
+        body.light-mode .chapter-item {
+            background-color: #f5f5f5;
+            color: #2d2d2d;
+        }
+
+        body.light-mode .chapter-item:hover {
+            background-color: #e0e0e0;
+        }
+
+        .no-tutorials {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 1024px) {
+            .tutorial-card {
+                grid-template-columns: 1fr 300px;
+            }
+
+            .tutorial-chapters {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tutorial-card {
+                grid-template-columns: 1fr;
+            }
+
+            .tutorial-chapters {
+                width: 100%;
+            }
+
+            .controls-bar {
+                flex-direction: column;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .filter-bar {
+                width: 100%;
+            }
+
+            .tutorial-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body> 
+    <!-- Dark Mode Toggle Button -->
+    <button class="dark-mode-toggle" onclick="toggleLightMode()" aria-label="Toggle light mode">
+        [D]
+    </button>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>bongo404</h1>
+                <p class="typewriter">Profile Found</p>
+            </div>
+           
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">[Home]</a></li>
+                    <li><a href="articles.html">[Articles]</a></li>
+                    <li><a href="projects.html">[Projects]</a></li>
+                    <li><a href="tutorials.html">[Tutorials]</a></li>
+                    <li><a href="#about">[About]</a></li>
+                </ul>
+            </nav>
+           
+            <hr class="decorative">
+           
+            <div class="sidebar-footer">
+                <p>"The dreams of yesterday are the hopes of today and the reality of tomorrow."</p>
+                <p>- Robert H. Goddard</p>
+            </div>
+        </div>
+       
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="tutorials-header">
+                <h2>Tutorials</h2>
+                <p class="tutorials-intro">Step-by-step guides covering retro computing, programming, game development, and hardware restoration. Learn by doing.</p>
+            </div>
+
+            <!-- Search and Filter Controls -->
+            <div class="controls-bar">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="[SEARCH TUTORIALS...]">
+                </div>
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">[All]</button>
+                    <button class="filter-btn" data-filter="beginner">[Beginner]</button>
+                    <button class="filter-btn" data-filter="intermediate">[Intermediate]</button>
+                    <button class="filter-btn" data-filter="advanced">[Advanced]</button>
+                </div>
+            </div>
+
+            <!-- Tutorials List -->
+            <div class="tutorials-list" id="tutorialsList">
+                <!-- Tutorials will be dynamically inserted here -->
+            </div>
+
+            <div class="no-tutorials" id="noTutorials" style="display: none;">
+                > No tutorials found matching your criteria
+            </div>
+           
+            <!-- Footer -->
+            <div class="footer">
+                © 2025 Tech Nostalgia • Built with HTML & CSS & Pixel Dreams
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample tutorials data
+        const tutorials = [
+            {
+                id: 1,
+                title: "C Language for Beginners",
+                difficulty: "beginner",
+                category: "Programming",
+                duration: "4 hours",
+                description: "Learn the basics of C programming. No prior experience needed.",
+                tags: ["C", "Programming", "Low-level"],
+                chapters: [
+                    "Introduction to C",
+                    "Variables & Data types",
+                    "Input & Output",
+                    "Loops",
+                    "Functions",
+                    "Arrays",
+                    "Pointers"
+                ],
+                link: "c_tutorial.html"
+            },
+            {
+                id: 2,
+                title: "Building a Retro Game in Godot",
+                difficulty: "intermediate",
+                category: "Game Development",
+                duration: "6 hours",
+                description: "Create a complete 8-bit style platformer using Godot Engine. Covers pixel art integration, retro physics, sound design, and shader effects.",
+                tags: ["Godot", "Game Dev", "Pixel Art"],
+                chapters: [
+                    "Project Setup",
+                    "Character Controller",
+                    "Level Design",
+                    "Enemy AI",
+                    "Sound & Music",
+                    "Polish & Export"
+                ],
+                link: "#"
+            },
+            {
+                id: 3,
+                title: "DOS Programming Fundamentals",
+                difficulty: "intermediate",
+                category: "Operating Systems",
+                duration: "5 hours",
+                description: "Explore MS-DOS programming with Turbo C. Learn to create text-based applications, work with files, and understand DOS internals.",
+                tags: ["DOS", "C Programming", "Retro"],
+                chapters: [
+                    "DOS Environment Setup",
+                    "Text Mode Graphics",
+                    "File Operations",
+                    "Memory Management",
+                    "Building a DOS App"
+                ],
+                link: "#"
+            },
+            {
+                id: 4,
+                title: "CRT Monitor Restoration Guide",
+                difficulty: "advanced",
+                category: "Hardware",
+                duration: "8 hours",
+                description: "Complete guide to safely restoring vintage CRT monitors. Covers disassembly, component testing, calibration, and safety procedures. WARNING: High voltage involved.",
+                tags: ["Hardware", "CRT", "Restoration"],
+                chapters: [
+                    "Safety First",
+                    "Tools & Equipment",
+                    "Disassembly Process",
+                    "Component Testing",
+                    "Calibration",
+                    "Reassembly & Testing"
+                ],
+                link: "#"
+            },
+            {
+                id: 5,
+                title: "Creating Pixel Art Animations",
+                difficulty: "beginner",
+                category: "Art & Design",
+                duration: "3 hours",
+                description: "Master the art of pixel animation. Learn techniques used in classic 16-bit games to bring characters and environments to life.",
+                tags: ["Pixel Art", "Animation", "Design"],
+                chapters: [
+                    "Pixel Art Basics",
+                    "Color Theory",
+                    "Animation Principles",
+                    "Character Sprites",
+                    "Practice Projects"
+                ],
+                link: "#"
+            },
+            {
+                id: 6,
+                title: "Z80 CPU Architecture Deep Dive",
+                difficulty: "advanced",
+                category: "Hardware",
+                duration: "10 hours",
+                description: "Comprehensive exploration of the Z80 microprocessor. Understand instruction sets, timing, and build a working emulator from scratch.",
+                tags: ["Z80", "CPU", "Emulation"],
+                chapters: [
+                    "Z80 Architecture",
+                    "Instruction Set",
+                    "Timing & Cycles",
+                    "Memory Interface",
+                    "Building an Emulator",
+                    "Testing & Debugging"
+                ],
+                link: "#"
+            },
+            {
+                id: 7,
+                title: "Retro Web Design with CSS",
+                difficulty: "beginner",
+                category: "Web Development",
+                duration: "4 hours",
+                description: "Create nostalgic web interfaces using modern CSS. Learn to implement CRT effects, scanlines, and authentic retro styling.",
+                tags: ["CSS", "Web Design", "Retro"],
+                chapters: [
+                    "Retro Color Palettes",
+                    "Typography Choices",
+                    "CRT Effects",
+                    "Pixel Perfect Layouts",
+                    "Complete Project"
+                ],
+                link: "#"
+            },
+            {
+                id: 8,
+                title: "6502 Assembly Programming",
+                difficulty: "intermediate",
+                category: "Programming",
+                duration: "7 hours",
+                description: "Program the legendary 6502 processor used in the Apple II, Commodore 64, and NES. Write games and demos for vintage hardware.",
+                tags: ["6502", "Assembly", "Retro"],
+                chapters: [
+                    "6502 Basics",
+                    "Addressing Modes",
+                    "Graphics & Sprites",
+                    "Sound Programming",
+                    "Creating a Game",
+                    "Hardware Integration"
+                ],
+                link: "#"
+            }
+        ];
+
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        function renderTutorials() {
+            const list = document.getElementById('tutorialsList');
+            const noTutorials = document.getElementById('noTutorials');
+            
+            // Filter tutorials by difficulty
+            let filtered = tutorials.filter(tutorial => 
+                currentFilter === 'all' || tutorial.difficulty === currentFilter
+            );
+
+            // Filter by search query
+            if (searchQuery) {
+                filtered = filtered.filter(tutorial => 
+                    tutorial.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    tutorial.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    tutorial.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    tutorial.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+                );
+            }
+
+            // Clear list
+            list.innerHTML = '';
+
+            if (filtered.length === 0) {
+                noTutorials.style.display = 'block';
+                return;
+            } else {
+                noTutorials.style.display = 'none';
+            }
+
+            // Render tutorials
+            filtered.forEach(tutorial => {
+                const card = document.createElement('div');
+                card.className = 'tutorial-card';
+                
+                const chaptersHTML = tutorial.chapters.map((chapter, index) => 
+                    `<li class="chapter-item"><span class="chapter-number">${index + 1}.</span>${chapter}</li>`
+                ).join('');
+
+                card.innerHTML = `
+                    <div class="tutorial-info">
+                        <div class="tutorial-header">
+                            <h3 class="tutorial-title">${tutorial.title}</h3>
+                            <span class="tutorial-difficulty ${tutorial.difficulty}">[${tutorial.difficulty.toUpperCase()}]</span>
+                        </div>
+                        <div class="tutorial-meta">
+                            <span>📁 ${tutorial.category}</span>
+                            <span>⏱️ ${tutorial.duration}</span>
+                            <span>📚 ${tutorial.chapters.length} Chapters</span>
+                        </div>
+                        <p class="tutorial-description">${tutorial.description}</p>
+                        <div class="tutorial-tags">
+                            ${tutorial.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <a href="${tutorial.link}" class="tutorial-btn">[Start Tutorial]</a>
+                    </div>
+                    <div class="tutorial-chapters">
+                        <div class="chapters-header">Chapters</div>
+                        <ul class="chapters-list">
+                            ${chaptersHTML}
+                        </ul>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // Filter button handlers
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.getAttribute('data-filter');
+                renderTutorials();
+            });
+        });
+
+        // Search input handler
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            searchQuery = e.target.value;
+            renderTutorials();
+        });
+
+        // Theme toggle
+        let isLightMode = false;
+
+        function toggleLightMode() {
+            const body = document.body;
+            const toggleBtn = document.querySelector('.dark-mode-toggle');
+            
+            if (isLightMode) {
+                body.classList.remove('light-mode');
+                toggleBtn.innerHTML = '[D]';
+                toggleBtn.setAttribute('aria-label', 'Switch to light mode');
+                localStorage.setItem('theme', 'dark');
+                isLightMode = false;
+            } else {
+                body.classList.add('light-mode');
+                toggleBtn.innerHTML = '[L]';
+                toggleBtn.setAttribute('aria-label', 'Switch to dark mode');
+                localStorage.setItem('theme', 'light');
+                isLightMode = true;
+            }
+        }
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                toggleLightMode();
+            }
+        }
+
+        // Keyboard shortcut (Ctrl/Cmd + D)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                e.preventDefault();
+                toggleLightMode();
+            }
+        });
+
+        // Initialize on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                initTheme();
+                renderTutorials();
+            });
+        } else {
+            initTheme();
+            renderTutorials();
+        }
+    </script>
+</body>
+</html>
